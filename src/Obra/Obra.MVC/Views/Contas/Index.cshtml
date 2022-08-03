@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Obra.Domain.Models.ContaModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Empreendimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vencimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataDoPagamento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataDaCompra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValorPago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroDoDocumento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Observacoes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoDeDespesaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoDePagamento)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Empreendimento.Bairro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vencimento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataDoPagamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataDaCompra)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValorPago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroDoDocumento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacoes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDeDespesaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDePagamento.Nome)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
