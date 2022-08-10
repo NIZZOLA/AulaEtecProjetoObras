@@ -4,11 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
+@await Html.PartialAsync("~/Views/Shared/HeaderPartial.cshtml")
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create"><i class="fa-solid fa-plus"></i> Novo</a>
 </p>
+
+
 <table class="table">
     <thead>
         <tr>

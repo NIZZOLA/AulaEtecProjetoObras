@@ -16,7 +16,7 @@ namespace Obra.Domain.Models
 
         [ForeignKey("Cliente")]
         public Guid? ClienteId { get; set; }
-        public ClienteFornecedorModel Cliente { get; set; }
+        public ClienteFornecedorModel? Cliente { get; set; }
 
         public DateTime DataOrcamento { get; set; }
         public DateTime DataInicio { get; set; }

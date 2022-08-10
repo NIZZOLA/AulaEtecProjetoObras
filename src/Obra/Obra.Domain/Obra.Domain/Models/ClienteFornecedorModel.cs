@@ -15,33 +15,41 @@ namespace Obra.Domain.Models
         public bool Cliente { get; set; }
         public bool Fornecedor { get; set; }
 
+        public string? NomeDoCliente
+        {
+            get
+            {
+                return !string.IsNullOrEmpty( this.Nome)  ? this.Nome : this.NomeFantasia;
+            }
+        }
+
         #region Dados Pessoa Fisica
         [MaxLength(50, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
         [MaxLength(18, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
-        public string Cpf { get; set; }
+        public string? Cpf { get; set; }
         public DateTime? DataDeNascimento { get; set; }
         #endregion
 
         #region Pessoa Juridica
         [MaxLength(50, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
-        public string NomeFantasia { get; set; }
+        public string? NomeFantasia { get; set; }
         [MaxLength(50, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
-        public string RazaoSocial { get; set; }
+        public string? RazaoSocial { get; set; }
 
         [MaxLength(18, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
-        public string Cnpj { get; set; }
+        public string? Cnpj { get; set; }
         [MaxLength(18, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
-        public string InscricaoEstadual { get; set; }
+        public string? InscricaoEstadual { get; set; }
         public bool OptanteDoSimples { get; set; }
         #endregion
 
         public string? Observacoes { get; set; }
 
-        [MaxLength(50, ErrorMessage = "")]
+        [MaxLength(50, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
         public string Logradouro { get; set; }
         public int Numero { get; set; }
-        [MaxLength(50, ErrorMessage = "")]
+        [MaxLength(50, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
         public string Bairro { get; set; }
 
         [MaxLength(50, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
@@ -50,12 +58,12 @@ namespace Obra.Domain.Models
         [MaxLength(2, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
         public string Estado { get; set; }
 
-        [MaxLength(10, ErrorMessage = "")]
+        [MaxLength(10, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
         public string Cep { get; set; }
         
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
-        public ICollection<EmpreendimentoModel> Empreendimentos { get; set; }
+        public ICollection<EmpreendimentoModel>? Empreendimentos { get; set; }
     }
 }

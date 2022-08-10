@@ -10,7 +10,7 @@ using Obra.Infra.Data;
 
 namespace Obra.MVC.Controllers
 {
-    public class ClienteFornecedoresController : Controller
+    public class ClienteFornecedoresController : ControllerBase
     {
         private readonly ObraMVCContext _context;
 
@@ -22,7 +22,9 @@ namespace Obra.MVC.Controllers
         // GET: ClienteFornecedores
         public async Task<IActionResult> Index()
         {
-              return _context.ClienteFornecedorModel != null ? 
+            CreateViewBags();
+
+            return _context.ClienteFornecedorModel != null ? 
                           View(await _context.ClienteFornecedorModel.ToListAsync()) :
                           Problem("Entity set 'ObraMVCContext.ClienteFornecedorModel'  is null.");
         }
@@ -30,6 +32,8 @@ namespace Obra.MVC.Controllers
         // GET: ClienteFornecedores/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            CreateViewBags();
+
             if (id == null || _context.ClienteFornecedorModel == null)
             {
                 return NotFound();
@@ -48,7 +52,10 @@ namespace Obra.MVC.Controllers
         // GET: ClienteFornecedores/Create
         public IActionResult Create()
         {
-            return View();
+            CreateViewBags();
+            var cli = new ClienteFornecedorModel();
+            cli.Cliente = true;
+            return View(cli);
         }
 
         // POST: ClienteFornecedores/Create
@@ -58,6 +65,8 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Cliente,Fornecedor,Nome,Cpf,DataDeNascimento,NomeFantasia,RazaoSocial,Cnpj,InscricaoEstadual,OptanteDoSimples,Observacoes,Logradouro,Numero,Bairro,Cidade,Estado,Cep,Latitude,Longitude,Id")] ClienteFornecedorModel clienteFornecedorModel)
         {
+            CreateViewBags();
+
             if (ModelState.IsValid)
             {
                 _context.Add(clienteFornecedorModel);
@@ -70,6 +79,8 @@ namespace Obra.MVC.Controllers
         // GET: ClienteFornecedores/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            CreateViewBags();
+
             if (id == null || _context.ClienteFornecedorModel == null)
             {
                 return NotFound();
@@ -90,6 +101,8 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid? id, [Bind("Cliente,Fornecedor,Nome,Cpf,DataDeNascimento,NomeFantasia,RazaoSocial,Cnpj,InscricaoEstadual,OptanteDoSimples,Observacoes,Logradouro,Numero,Bairro,Cidade,Estado,Cep,Latitude,Longitude,Id")] ClienteFornecedorModel clienteFornecedorModel)
         {
+            CreateViewBags();
+
             if (id != clienteFornecedorModel.Id)
             {
                 return NotFound();
@@ -121,6 +134,8 @@ namespace Obra.MVC.Controllers
         // GET: ClienteFornecedores/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            CreateViewBags();
+
             if (id == null || _context.ClienteFornecedorModel == null)
             {
                 return NotFound();
@@ -141,6 +156,8 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid? id)
         {
+            CreateViewBags();
+
             if (_context.ClienteFornecedorModel == null)
             {
                 return Problem("Entity set 'ObraMVCContext.ClienteFornecedorModel'  is null.");

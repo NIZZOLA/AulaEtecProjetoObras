@@ -10,7 +10,7 @@ using Obra.Infra.Data;
 
 namespace Obra.MVC.Controllers
 {
-    public class ContasController : Controller
+    public class ContasController : ControllerBase
     {
         private readonly ObraMVCContext _context;
 
@@ -20,10 +20,22 @@ namespace Obra.MVC.Controllers
         }
 
         // GET: Contas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Guid? id)
         {
-            var obraMVCContext = _context.ContaModel.Include(c => c.Empreendimento).Include(c => c.TipoDePagamento);
-            return View(await obraMVCContext.ToListAsync());
+            CreateViewBags();
+            if(id == null)
+            {
+                var obraMVCContext = _context.ContaModel.Include(c => c.Empreendimento).Include(c => c.TipoDePagamento);
+
+                return View(await obraMVCContext.ToListAsync());
+            }
+            else
+            {
+                ViewBag.NomeDoEmpreendimento = _context.EmpreendimentoModel.Where(a => a.Id == id.Value).FirstOrDefault().Nome;
+                var obraMVCContext = _context.ContaModel.Where(a => a.EmpreendimentoId == id.Value).Include(c => c.Empreendimento).Include(c => c.TipoDePagamento);
+
+                return View(await obraMVCContext.ToListAsync());
+            }
         }
 
         // GET: Contas/Details/5
@@ -49,7 +61,8 @@ namespace Obra.MVC.Controllers
         // GET: Contas/Create
         public IActionResult Create()
         {
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Bairro");
+            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Nome");
+            ViewData["TipoDeDespesaId"] = new SelectList(_context.TipoDeDespesaReceitaModel, "Id", "Nome");
             ViewData["TipoDePagamentoId"] = new SelectList(_context.TipoDePagamentoModel, "Id", "Nome");
             return View();
         }
@@ -67,7 +80,8 @@ namespace Obra.MVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Bairro", contaModel.EmpreendimentoId);
+            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Nome", contaModel.EmpreendimentoId);
+            ViewData["TipoDeDespesaId"] = new SelectList(_context.TipoDeDespesaReceitaModel, "Id", "Nome", contaModel.TipoDeDespesaId);
             ViewData["TipoDePagamentoId"] = new SelectList(_context.TipoDePagamentoModel, "Id", "Nome", contaModel.TipoDePagamentoId);
             return View(contaModel);
         }
@@ -85,7 +99,8 @@ namespace Obra.MVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Bairro", contaModel.EmpreendimentoId);
+            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Nome", contaModel.EmpreendimentoId);
+            ViewData["TipoDeDespesaId"] = new SelectList(_context.TipoDeDespesaReceitaModel, "Id", "Nome", contaModel.TipoDeDespesaId);
             ViewData["TipoDePagamentoId"] = new SelectList(_context.TipoDePagamentoModel, "Id", "Nome", contaModel.TipoDePagamentoId);
             return View(contaModel);
         }
@@ -122,7 +137,8 @@ namespace Obra.MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Bairro", contaModel.EmpreendimentoId);
+            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Nome", contaModel.EmpreendimentoId);
+            ViewData["TipoDeDespesaId"] = new SelectList(_context.TipoDeDespesaReceitaModel, "Id", "Nome", contaModel.TipoDeDespesaId);
             ViewData["TipoDePagamentoId"] = new SelectList(_context.TipoDePagamentoModel, "Id", "Nome", contaModel.TipoDePagamentoId);
             return View(contaModel);
         }

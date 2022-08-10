@@ -13,7 +13,7 @@ namespace Obra.MVC.Controllers
     public class TipoDeDespesaReceitasController : Controller
     {
         private readonly ObraMVCContext _context;
-
+        
         public TipoDeDespesaReceitasController(ObraMVCContext context)
         {
             _context = context;
@@ -22,7 +22,10 @@ namespace Obra.MVC.Controllers
         // GET: TipoDeDespesaReceitas
         public async Task<IActionResult> Index()
         {
-              return _context.TipoDeDespesaReceitaModel != null ? 
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            ViewBag.ActionName = this.ControllerContext.RouteData.Values["action"].ToString();
+
+            return _context.TipoDeDespesaReceitaModel != null ? 
                           View(await _context.TipoDeDespesaReceitaModel.ToListAsync()) :
                           Problem("Entity set 'ObraMVCContext.TipoDeDespesaReceitaModel'  is null.");
         }
