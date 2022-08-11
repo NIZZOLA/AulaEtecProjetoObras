@@ -44,6 +44,8 @@ namespace Obra.Domain.Models
         public bool OptanteDoSimples { get; set; }
         #endregion
 
+        public string? Telefone { get; set; }
+        public string? Email { get; set; }
         public string? Observacoes { get; set; }
 
         [MaxLength(50, ErrorMessage = MessageHelpers.MaxLenghtMessage)]
