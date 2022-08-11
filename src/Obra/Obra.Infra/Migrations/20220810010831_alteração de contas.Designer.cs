@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obra.Infra.Data;
 
@@ -11,9 +12,10 @@ using Obra.Infra.Data;
 namespace Obra.Infra.Migrations
 {
     [DbContext(typeof(ObraMVCContext))]
-    partial class ObraMVCContextModelSnapshot : ModelSnapshot
+    [Migration("20220810010831_alteração de contas")]
+    partial class alteraçãodecontas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,9 +68,6 @@ namespace Obra.Infra.Migrations
                     b.Property<DateTime?>("DataExclusao")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasMaxLength(2)
@@ -112,9 +111,6 @@ namespace Obra.Infra.Migrations
                     b.Property<string>("RazaoSocial")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Telefone")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("UsuarioIdAlteracao")
                         .HasColumnType("uniqueidentifier");

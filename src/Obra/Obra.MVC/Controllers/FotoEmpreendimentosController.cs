@@ -10,7 +10,7 @@ using Obra.Infra.Data;
 
 namespace Obra.MVC.Controllers
 {
-    public class FotoEmpreendimentosController : Controller
+    public class FotoEmpreendimentosController : ControllerBase
     {
         private readonly ObraMVCContext _context;
 

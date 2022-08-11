@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obra.Infra.Data;
 
@@ -11,9 +12,10 @@ using Obra.Infra.Data;
 namespace Obra.Infra.Migrations
 {
     [DbContext(typeof(ObraMVCContext))]
-    partial class ObraMVCContextModelSnapshot : ModelSnapshot
+    [Migration("20220810002153_descricao da foto")]
+    partial class descricaodafoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,9 +68,6 @@ namespace Obra.Infra.Migrations
                     b.Property<DateTime?>("DataExclusao")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasMaxLength(2)
@@ -113,9 +112,6 @@ namespace Obra.Infra.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Telefone")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("UsuarioIdAlteracao")
                         .HasColumnType("uniqueidentifier");
 
@@ -152,6 +148,7 @@ namespace Obra.Infra.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("EmpreendimentoId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NumeroDoDocumento")
@@ -165,10 +162,11 @@ namespace Obra.Infra.Migrations
                     b.Property<Guid?>("TipoDeDespesaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TipoDeDespesaReceitaId")
+                    b.Property<Guid>("TipoDeDespesaReceitaId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("TipoDePagamentoId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UsuarioIdAlteracao")
@@ -405,15 +403,21 @@ namespace Obra.Infra.Migrations
                 {
                     b.HasOne("Obra.Domain.Models.EmpreendimentoModel", "Empreendimento")
                         .WithMany()
-                        .HasForeignKey("EmpreendimentoId");
+                        .HasForeignKey("EmpreendimentoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Obra.Domain.Models.TipoDeDespesaReceitaModel", "TipoDeDespesaReceita")
                         .WithMany("Contas")
-                        .HasForeignKey("TipoDeDespesaReceitaId");
+                        .HasForeignKey("TipoDeDespesaReceitaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Obra.Domain.Models.TipoDePagamentoModel", "TipoDePagamento")
                         .WithMany("Contas")
-                        .HasForeignKey("TipoDePagamentoId");
+                        .HasForeignKey("TipoDePagamentoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Empreendimento");
 

@@ -10,7 +10,7 @@ using Obra.Infra.Data;
 
 namespace Obra.MVC.Controllers
 {
-    public class EmpreendimentosController : Controller
+    public class EmpreendimentosController : ControllerBase
     {
         private readonly ObraMVCContext _context;
 
@@ -22,6 +22,7 @@ namespace Obra.MVC.Controllers
         // GET: Empreendimentos
         public async Task<IActionResult> Index()
         {
+            CreateViewBags();
             var obraMVCContext = _context.EmpreendimentoModel.Include(e => e.Cliente);
             return View(await obraMVCContext.ToListAsync());
         }
@@ -29,6 +30,8 @@ namespace Obra.MVC.Controllers
         // GET: Empreendimentos/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            CreateViewBags();
+
             if (id == null || _context.EmpreendimentoModel == null)
             {
                 return NotFound();
@@ -48,7 +51,9 @@ namespace Obra.MVC.Controllers
         // GET: Empreendimentos/Create
         public IActionResult Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.ClienteFornecedorModel, "Id", "Bairro");
+            CreateViewBags();
+
+            ViewData["ClienteId"] = new SelectList(_context.ClienteFornecedorModel, "Id", "NomeDoCliente");
             return View();
         }
 
@@ -59,6 +64,8 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Nome,ClienteId,DataOrcamento,DataInicio,DataPrevistaTermino,DataTermino,Logradouro,Numero,Bairro,Cidade,Estado,Cep,Latitude,Longitude,Id")] EmpreendimentoModel empreendimentoModel)
         {
+            CreateViewBags();
+
             if (ModelState.IsValid)
             {
                 _context.Add(empreendimentoModel);
@@ -72,6 +79,8 @@ namespace Obra.MVC.Controllers
         // GET: Empreendimentos/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            CreateViewBags();
+
             if (id == null || _context.EmpreendimentoModel == null)
             {
                 return NotFound();
@@ -93,6 +102,8 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid? id, [Bind("Nome,ClienteId,DataOrcamento,DataInicio,DataPrevistaTermino,DataTermino,Logradouro,Numero,Bairro,Cidade,Estado,Cep,Latitude,Longitude,Id")] EmpreendimentoModel empreendimentoModel)
         {
+            CreateViewBags();
+
             if (id != empreendimentoModel.Id)
             {
                 return NotFound();
@@ -125,6 +136,8 @@ namespace Obra.MVC.Controllers
         // GET: Empreendimentos/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            CreateViewBags();
+
             if (id == null || _context.EmpreendimentoModel == null)
             {
                 return NotFound();
@@ -146,6 +159,8 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid? id)
         {
+            CreateViewBags();
+
             if (_context.EmpreendimentoModel == null)
             {
                 return Problem("Entity set 'ObraMVCContext.EmpreendimentoModel'  is null.");

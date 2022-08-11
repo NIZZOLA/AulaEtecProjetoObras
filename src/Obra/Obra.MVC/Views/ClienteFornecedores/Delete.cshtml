@@ -4,12 +4,12 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+
+
+@await Html.PartialAsync("~/Views/Shared/HeaderPartial.cshtml")
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>ClienteFornecedorModel</h4>
-    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Cliente)

@@ -11,7 +11,7 @@ namespace Obra.Domain.Models
     {
         [ForeignKey("Empreendimento")]
         public Guid? EmpreendimentoId { get; set; }
-        public EmpreendimentoModel Empreendimento { get; set; }
+        public EmpreendimentoModel? Empreendimento { get; set; }
 
         public DateTime Vencimento { get; set; }
         public DateTime? DataDoPagamento { get; set; }
@@ -28,10 +28,10 @@ namespace Obra.Domain.Models
 
         [ForeignKey("TipoDespesaReceita")]
         public Guid? TipoDeDespesaId { get; set; }
-        public TipoDeDespesaReceitaModel TipoDeDespesaReceita { get; set; }
+        public TipoDeDespesaReceitaModel? TipoDeDespesaReceita { get; set; }
 
         [ForeignKey("TipoDePagamento")]
         public Guid? TipoDePagamentoId { get; set; }
-        public TipoDePagamentoModel TipoDePagamento { get; set; }
+        public TipoDePagamentoModel? TipoDePagamento { get; set; }
     }
 }
