@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Obra.Domain.Models;
 using Obra.Infra.Data;
+using Obra.MVC.Data;
 
 namespace Obra.MVC.Controllers
 {
@@ -24,8 +25,8 @@ namespace Obra.MVC.Controllers
         {
             CreateViewBags();
 
-            return _context.ClienteFornecedorModel != null ? 
-                          View(await _context.ClienteFornecedorModel.ToListAsync()) :
+            return _context.ClientesFornecedores != null ? 
+                          View(await _context.ClientesFornecedores.ToListAsync()) :
                           Problem("Entity set 'ObraMVCContext.ClienteFornecedorModel'  is null.");
         }
 
@@ -34,12 +35,12 @@ namespace Obra.MVC.Controllers
         {
             CreateViewBags();
 
-            if (id == null || _context.ClienteFornecedorModel == null)
+            if (id == null || _context.ClientesFornecedores == null)
             {
                 return NotFound();
             }
 
-            var clienteFornecedorModel = await _context.ClienteFornecedorModel
+            var clienteFornecedorModel = await _context.ClientesFornecedores
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (clienteFornecedorModel == null)
             {
@@ -81,12 +82,12 @@ namespace Obra.MVC.Controllers
         {
             CreateViewBags();
 
-            if (id == null || _context.ClienteFornecedorModel == null)
+            if (id == null || _context.ClientesFornecedores == null)
             {
                 return NotFound();
             }
 
-            var clienteFornecedorModel = await _context.ClienteFornecedorModel.FindAsync(id);
+            var clienteFornecedorModel = await _context.ClientesFornecedores.FindAsync(id);
             if (clienteFornecedorModel == null)
             {
                 return NotFound();
@@ -136,12 +137,12 @@ namespace Obra.MVC.Controllers
         {
             CreateViewBags();
 
-            if (id == null || _context.ClienteFornecedorModel == null)
+            if (id == null || _context.ClientesFornecedores == null)
             {
                 return NotFound();
             }
 
-            var clienteFornecedorModel = await _context.ClienteFornecedorModel
+            var clienteFornecedorModel = await _context.ClientesFornecedores
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (clienteFornecedorModel == null)
             {
@@ -158,14 +159,14 @@ namespace Obra.MVC.Controllers
         {
             CreateViewBags();
 
-            if (_context.ClienteFornecedorModel == null)
+            if (_context.ClientesFornecedores == null)
             {
                 return Problem("Entity set 'ObraMVCContext.ClienteFornecedorModel'  is null.");
             }
-            var clienteFornecedorModel = await _context.ClienteFornecedorModel.FindAsync(id);
+            var clienteFornecedorModel = await _context.ClientesFornecedores.FindAsync(id);
             if (clienteFornecedorModel != null)
             {
-                _context.ClienteFornecedorModel.Remove(clienteFornecedorModel);
+                _context.ClientesFornecedores.Remove(clienteFornecedorModel);
             }
             
             await _context.SaveChangesAsync();
@@ -174,7 +175,7 @@ namespace Obra.MVC.Controllers
 
         private bool ClienteFornecedorModelExists(Guid? id)
         {
-          return (_context.ClienteFornecedorModel?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.ClientesFornecedores?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

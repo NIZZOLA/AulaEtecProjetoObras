@@ -10,14 +10,14 @@ using Obra.Infra.Data;
 
 namespace Obra.Infra.Migrations
 {
-    [DbContext(typeof(ObraMVCContext))]
+    [DbContext(typeof(ObraDataContext))]
     partial class ObraMVCContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -197,7 +197,7 @@ namespace Obra.Infra.Migrations
 
                     b.HasIndex("TipoDePagamentoId");
 
-                    b.ToTable("ContaModel");
+                    b.ToTable("Contas");
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.EmpreendimentoModel", b =>
@@ -282,7 +282,7 @@ namespace Obra.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("EmpreendimentoModel");
+                    b.ToTable("Empreendimentos");
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.FotoEmpreendimentoModel", b =>
@@ -324,7 +324,7 @@ namespace Obra.Infra.Migrations
 
                     b.HasIndex("EmpreendimentoId");
 
-                    b.ToTable("FotoEmpreendimentoModel");
+                    b.ToTable("FotosEmpreendimentos");
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.TipoDeDespesaReceitaModel", b =>
@@ -399,6 +399,47 @@ namespace Obra.Infra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TipoDePagamento");
+                });
+
+            modelBuilder.Entity("Obra.Domain.Models.UsuarioModel", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DataAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataExclusao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Perfil")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UsuarioIdAlteracao")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UsuarioIdCriacao")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UsuarioIdExclusao")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuario");
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.ContaModel", b =>

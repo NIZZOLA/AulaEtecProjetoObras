@@ -6,22 +6,28 @@ namespace Obra.MVC.Controllers
     {
         public void CreateViewBags()
         {
-            var controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
-            var actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            var controllerName = this.ControllerContext?.RouteData?.Values?["controller"]?.ToString();
+            var actionName = this.ControllerContext?.RouteData?.Values?["action"]?.ToString();
+            ViewBag.ShowCreate = true;
 
-            switch(controllerName.ToLower())
+            switch (controllerName?.ToLower())
             {
-                case "clientefornecedores":
-                    ViewBag.ControllerName = "Cadastro de Clientes e Fornecedores";
-                    ViewBag.ControllerIcon = "fa-solid fa-people-group";
-                    break;
                 case "contas":
                     ViewBag.ControllerName = "Cadastro de Contas";
                     ViewBag.ControllerIcon = "fa-solid fa-credit-card";
+                    ViewBag.ShowCreate = false;
+                    break;
+                case "usuarios":
+                    ViewBag.ControllerName = "Cadastro de Usuários";
+                    ViewBag.ControllerIcon = "fa-solid fa-users";
                     break;
                 case "empreendimentos":
                     ViewBag.ControllerName = "Cadastro de Empreendimentos";
                     ViewBag.ControllerIcon = "fa-solid fa-building";
+                    break;
+                case "clientefornecedores":
+                    ViewBag.ControllerName = "Cadastro de Clientes e Fornecedores";
+                    ViewBag.ControllerIcon = "fa-solid fa-people-group";
                     break;
                 case "fotoempreendimentos":
                     ViewBag.ControllerName = "Cadastro de Fotos de Empreendimentos";
@@ -37,7 +43,7 @@ namespace Obra.MVC.Controllers
                     break;
             }
 
-            switch(actionName.ToLower())
+            switch(actionName?.ToLower())
             {
                 case "index":
                     ViewBag.ActionName = "Consulta geral";

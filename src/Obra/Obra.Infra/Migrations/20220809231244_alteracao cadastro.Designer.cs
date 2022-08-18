@@ -11,7 +11,7 @@ using Obra.Infra.Data;
 
 namespace Obra.Infra.Migrations
 {
-    [DbContext(typeof(ObraMVCContext))]
+    [DbContext(typeof(ObraDataContext))]
     [Migration("20220809231244_alteracao cadastro")]
     partial class alteracaocadastro
     {

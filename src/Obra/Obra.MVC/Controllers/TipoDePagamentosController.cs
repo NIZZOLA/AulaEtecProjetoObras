@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Obra.Domain.Models;
 using Obra.Infra.Data;
+using Obra.MVC.Data;
 
 namespace Obra.MVC.Controllers
 {
-    public class TipoDePagamentosController : Controller
+    public class TipoDePagamentosController : ControllerBase
     {
         private readonly ObraMVCContext _context;
 
@@ -22,20 +23,22 @@ namespace Obra.MVC.Controllers
         // GET: TipoDePagamentos
         public async Task<IActionResult> Index()
         {
-              return _context.TipoDePagamentoModel != null ? 
-                          View(await _context.TipoDePagamentoModel.ToListAsync()) :
+            CreateViewBags();
+            return _context.TiposDePagamentos != null ? 
+                          View(await _context.TiposDePagamentos.ToListAsync()) :
                           Problem("Entity set 'ObraMVCContext.TipoDePagamentoModel'  is null.");
         }
 
         // GET: TipoDePagamentos/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.TipoDePagamentoModel == null)
+            CreateViewBags();
+            if (id == null || _context.TiposDePagamentos == null)
             {
                 return NotFound();
             }
 
-            var tipoDePagamentoModel = await _context.TipoDePagamentoModel
+            var tipoDePagamentoModel = await _context.TiposDePagamentos
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tipoDePagamentoModel == null)
             {
@@ -48,6 +51,7 @@ namespace Obra.MVC.Controllers
         // GET: TipoDePagamentos/Create
         public IActionResult Create()
         {
+            CreateViewBags();
             return View();
         }
 
@@ -58,6 +62,7 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Nome,Id")] TipoDePagamentoModel tipoDePagamentoModel)
         {
+            CreateViewBags();
             if (ModelState.IsValid)
             {
                 _context.Add(tipoDePagamentoModel);
@@ -70,12 +75,13 @@ namespace Obra.MVC.Controllers
         // GET: TipoDePagamentos/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.TipoDePagamentoModel == null)
+            CreateViewBags();
+            if (id == null || _context.TiposDePagamentos == null)
             {
                 return NotFound();
             }
 
-            var tipoDePagamentoModel = await _context.TipoDePagamentoModel.FindAsync(id);
+            var tipoDePagamentoModel = await _context.TiposDePagamentos.FindAsync(id);
             if (tipoDePagamentoModel == null)
             {
                 return NotFound();
@@ -90,6 +96,7 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid? id, [Bind("Nome,Id")] TipoDePagamentoModel tipoDePagamentoModel)
         {
+            CreateViewBags();
             if (id != tipoDePagamentoModel.Id)
             {
                 return NotFound();
@@ -121,12 +128,13 @@ namespace Obra.MVC.Controllers
         // GET: TipoDePagamentos/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.TipoDePagamentoModel == null)
+            CreateViewBags();
+            if (id == null || _context.TiposDePagamentos == null)
             {
                 return NotFound();
             }
 
-            var tipoDePagamentoModel = await _context.TipoDePagamentoModel
+            var tipoDePagamentoModel = await _context.TiposDePagamentos
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tipoDePagamentoModel == null)
             {
@@ -141,14 +149,15 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid? id)
         {
-            if (_context.TipoDePagamentoModel == null)
+            CreateViewBags();
+            if (_context.TiposDePagamentos == null)
             {
                 return Problem("Entity set 'ObraMVCContext.TipoDePagamentoModel'  is null.");
             }
-            var tipoDePagamentoModel = await _context.TipoDePagamentoModel.FindAsync(id);
+            var tipoDePagamentoModel = await _context.TiposDePagamentos.FindAsync(id);
             if (tipoDePagamentoModel != null)
             {
-                _context.TipoDePagamentoModel.Remove(tipoDePagamentoModel);
+                _context.TiposDePagamentos.Remove(tipoDePagamentoModel);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +166,7 @@ namespace Obra.MVC.Controllers
 
         private bool TipoDePagamentoModelExists(Guid? id)
         {
-          return (_context.TipoDePagamentoModel?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.TiposDePagamentos?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

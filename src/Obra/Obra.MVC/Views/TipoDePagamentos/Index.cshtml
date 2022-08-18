@@ -1,13 +1,6 @@
 ﻿@model IEnumerable<Obra.Domain.Models.TipoDePagamentoModel>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
 @await Html.PartialAsync("~/Views/Shared/HeaderPartial.cshtml")
-<p>
-    <a asp-action="Create"><i class="fa-solid fa-plus"></i> Novo</a>
-</p>
 
 <table class="table">
     <thead>
@@ -19,17 +12,15 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @await Html.PartialAsync("~/Views/Shared/IndexTableButtonsPartial.cshtml", item.Id)
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

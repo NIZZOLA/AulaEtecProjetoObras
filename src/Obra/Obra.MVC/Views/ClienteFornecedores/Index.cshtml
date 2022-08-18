@@ -1,13 +1,6 @@
 ﻿@model IEnumerable<Obra.Domain.Models.ClienteFornecedorModel>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
 @await Html.PartialAsync("~/Views/Shared/HeaderPartial.cshtml")
-<p>
-    <a asp-action="Create"><i class="fa-solid fa-plus"></i> Novo</a>
-</p>
 
 <table class="table">
     <thead>
@@ -133,9 +126,7 @@
                 @Html.DisplayFor(modelItem => item.Longitude)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-edit"></i> Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-magnifying-glass"></i> Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i>  Delete</a>
+                @await Html.PartialAsync("~/Views/Shared/IndexTableButtonsPartial.cshtml", item.Id)
             </td>
         </tr>
 }

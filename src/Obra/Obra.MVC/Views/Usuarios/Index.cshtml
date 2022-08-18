@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Obra.Domain.Models.UsuarioModel>
+
+@await Html.PartialAsync("~/Views/Shared/HeaderPartial.cshtml")
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+               <th>
+                @Html.DisplayNameFor(model => model.Perfil)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Perfil)
+            </td>
+            <td>
+               @await Html.PartialAsync("~/Views/Shared/IndexTableButtonsPartial.cshtml", item.Id)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

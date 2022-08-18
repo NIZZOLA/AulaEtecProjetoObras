@@ -1,13 +1,6 @@
 ﻿@model IEnumerable<Obra.Domain.Models.EmpreendimentoModel>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
 @await Html.PartialAsync("~/Views/Shared/HeaderPartial.cshtml")
-<p>
-    <a asp-action="Create"><i class="fa-solid fa-plus"></i> Novo</a>
-</p>
 
 <table class="table">
     <thead>
@@ -103,14 +96,10 @@
                 @Html.DisplayFor(modelItem => item.Longitude)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" title="Editar"><i class="fa-solid fa-edit"></i></a>
-                <a asp-action="Details" asp-route-id="@item.Id" title="Consultar"><i class="fa-solid fa-magnifying-glass"></i></a>
-                <a asp-action="Delete" asp-route-id="@item.Id" title="Excluir"><i class="fa-solid fa-trash"></i></a>            
+                @await Html.PartialAsync("~/Views/Shared/IndexTableButtonsPartial.cshtml", item.Id)
             
                 <a asp-action="Index" asp-controller="Contas" asp-route-id="@item.Id" title="Contas"><i class="fa-solid fa-credit-card"></i></a>            
-                <a asp-action="Index" asp-controller="FotoEmpreendimentos" asp-route-id="@item.Id" title="Fotos"><i class="fa-solid fa-images"></i></a>            
-            
-
+                <a asp-action="Index" asp-controller="FotoEmpreendimentos" asp-route-id="@item.Id" title="Fotos"><i class="fa-solid fa-images"></i></a>
             </td>
         </tr>
 }

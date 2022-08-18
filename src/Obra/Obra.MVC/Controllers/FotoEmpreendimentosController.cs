@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Obra.Domain.Models;
 using Obra.Infra.Data;
+using Obra.MVC.Data;
 
 namespace Obra.MVC.Controllers
 {
@@ -22,19 +23,21 @@ namespace Obra.MVC.Controllers
         // GET: FotoEmpreendimentos
         public async Task<IActionResult> Index()
         {
-            var obraMVCContext = _context.FotoEmpreendimentoModel.Include(f => f.Empreendimento);
+            CreateViewBags();
+            var obraMVCContext = _context.FotosEmpreendimentos.Include(f => f.Empreendimento);
             return View(await obraMVCContext.ToListAsync());
         }
 
         // GET: FotoEmpreendimentos/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.FotoEmpreendimentoModel == null)
+            CreateViewBags();
+            if (id == null || _context.FotosEmpreendimentos == null)
             {
                 return NotFound();
             }
 
-            var fotoEmpreendimentoModel = await _context.FotoEmpreendimentoModel
+            var fotoEmpreendimentoModel = await _context.FotosEmpreendimentos
                 .Include(f => f.Empreendimento)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (fotoEmpreendimentoModel == null)
@@ -48,7 +51,8 @@ namespace Obra.MVC.Controllers
         // GET: FotoEmpreendimentos/Create
         public IActionResult Create()
         {
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Bairro");
+            CreateViewBags();
+            ViewData["EmpreendimentoId"] = new SelectList(_context.Empreendimentos, "Id", "Bairro");
             return View();
         }
 
@@ -59,30 +63,32 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EmpreendimentoId,NomeDoArquivo,Id")] FotoEmpreendimentoModel fotoEmpreendimentoModel)
         {
+            CreateViewBags();
             if (ModelState.IsValid)
             {
                 _context.Add(fotoEmpreendimentoModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Bairro", fotoEmpreendimentoModel.EmpreendimentoId);
+            ViewData["EmpreendimentoId"] = new SelectList(_context.Empreendimentos, "Id", "Bairro", fotoEmpreendimentoModel.EmpreendimentoId);
             return View(fotoEmpreendimentoModel);
         }
 
         // GET: FotoEmpreendimentos/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.FotoEmpreendimentoModel == null)
+            CreateViewBags();
+            if (id == null || _context.FotosEmpreendimentos == null)
             {
                 return NotFound();
             }
 
-            var fotoEmpreendimentoModel = await _context.FotoEmpreendimentoModel.FindAsync(id);
+            var fotoEmpreendimentoModel = await _context.FotosEmpreendimentos.FindAsync(id);
             if (fotoEmpreendimentoModel == null)
             {
                 return NotFound();
             }
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Bairro", fotoEmpreendimentoModel.EmpreendimentoId);
+            ViewData["EmpreendimentoId"] = new SelectList(_context.Empreendimentos, "Id", "Bairro", fotoEmpreendimentoModel.EmpreendimentoId);
             return View(fotoEmpreendimentoModel);
         }
 
@@ -93,6 +99,7 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid? id, [Bind("EmpreendimentoId,NomeDoArquivo,Id")] FotoEmpreendimentoModel fotoEmpreendimentoModel)
         {
+            CreateViewBags();
             if (id != fotoEmpreendimentoModel.Id)
             {
                 return NotFound();
@@ -118,19 +125,20 @@ namespace Obra.MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Bairro", fotoEmpreendimentoModel.EmpreendimentoId);
+            ViewData["EmpreendimentoId"] = new SelectList(_context.Empreendimentos, "Id", "Bairro", fotoEmpreendimentoModel.EmpreendimentoId);
             return View(fotoEmpreendimentoModel);
         }
 
         // GET: FotoEmpreendimentos/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.FotoEmpreendimentoModel == null)
+            CreateViewBags();
+            if (id == null || _context.FotosEmpreendimentos == null)
             {
                 return NotFound();
             }
 
-            var fotoEmpreendimentoModel = await _context.FotoEmpreendimentoModel
+            var fotoEmpreendimentoModel = await _context.FotosEmpreendimentos
                 .Include(f => f.Empreendimento)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (fotoEmpreendimentoModel == null)
@@ -146,14 +154,15 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid? id)
         {
-            if (_context.FotoEmpreendimentoModel == null)
+            CreateViewBags();
+            if (_context.FotosEmpreendimentos == null)
             {
                 return Problem("Entity set 'ObraMVCContext.FotoEmpreendimentoModel'  is null.");
             }
-            var fotoEmpreendimentoModel = await _context.FotoEmpreendimentoModel.FindAsync(id);
+            var fotoEmpreendimentoModel = await _context.FotosEmpreendimentos.FindAsync(id);
             if (fotoEmpreendimentoModel != null)
             {
-                _context.FotoEmpreendimentoModel.Remove(fotoEmpreendimentoModel);
+                _context.FotosEmpreendimentos.Remove(fotoEmpreendimentoModel);
             }
             
             await _context.SaveChangesAsync();
@@ -162,7 +171,7 @@ namespace Obra.MVC.Controllers
 
         private bool FotoEmpreendimentoModelExists(Guid? id)
         {
-          return (_context.FotoEmpreendimentoModel?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.FotosEmpreendimentos?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -1,9 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Obra.Infra.Data;
+using Obra.MVC.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ObraDataContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ObraMVCContext") ?? 
+                throw new InvalidOperationException("Connection string 'ObraMVCContext' not found."), b => b.MigrationsAssembly("Obra.Infra")));
+
 builder.Services.AddDbContext<ObraMVCContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ObraMVCContext") ?? throw new InvalidOperationException("Connection string 'ObraMVCContext' not found."), b => b.MigrationsAssembly("Obra.Infra")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ObraMVCContext") ??
+                throw new InvalidOperationException("Connection string 'ObraMVCContext' not found."), b => b.MigrationsAssembly("Obra.Infra")));
+
+
+
+//builder.Services.AddScoped<DbContext, ObraMVCContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

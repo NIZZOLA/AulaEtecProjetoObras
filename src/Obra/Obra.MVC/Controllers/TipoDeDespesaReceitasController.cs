@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Obra.Domain.Models;
 using Obra.Infra.Data;
+using Obra.MVC.Data;
 
 namespace Obra.MVC.Controllers
 {
-    public class TipoDeDespesaReceitasController : Controller
+    public class TipoDeDespesaReceitasController : ControllerBase
     {
         private readonly ObraMVCContext _context;
         
@@ -22,23 +23,23 @@ namespace Obra.MVC.Controllers
         // GET: TipoDeDespesaReceitas
         public async Task<IActionResult> Index()
         {
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
-            ViewBag.ActionName = this.ControllerContext.RouteData.Values["action"].ToString();
-
-            return _context.TipoDeDespesaReceitaModel != null ? 
-                          View(await _context.TipoDeDespesaReceitaModel.ToListAsync()) :
+            CreateViewBags();
+            
+            return _context.TiposDeDespesaReceitas != null ? 
+                          View(await _context.TiposDeDespesaReceitas.ToListAsync()) :
                           Problem("Entity set 'ObraMVCContext.TipoDeDespesaReceitaModel'  is null.");
         }
 
         // GET: TipoDeDespesaReceitas/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.TipoDeDespesaReceitaModel == null)
+            CreateViewBags();
+            if (id == null || _context.TiposDeDespesaReceitas == null)
             {
                 return NotFound();
             }
 
-            var tipoDeDespesaReceitaModel = await _context.TipoDeDespesaReceitaModel
+            var tipoDeDespesaReceitaModel = await _context.TiposDeDespesaReceitas
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tipoDeDespesaReceitaModel == null)
             {
@@ -51,6 +52,7 @@ namespace Obra.MVC.Controllers
         // GET: TipoDeDespesaReceitas/Create
         public IActionResult Create()
         {
+            CreateViewBags();
             return View();
         }
 
@@ -61,6 +63,7 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TipoDeDespesaReceitaModel tipoDeDespesaReceitaModel)
         {
+            CreateViewBags();
             if (ModelState.IsValid)
             {
                 _context.Add(tipoDeDespesaReceitaModel);
@@ -73,12 +76,13 @@ namespace Obra.MVC.Controllers
         // GET: TipoDeDespesaReceitas/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.TipoDeDespesaReceitaModel == null)
+            CreateViewBags();
+            if (id == null || _context.TiposDeDespesaReceitas == null)
             {
                 return NotFound();
             }
 
-            var tipoDeDespesaReceitaModel = await _context.TipoDeDespesaReceitaModel.FindAsync(id);
+            var tipoDeDespesaReceitaModel = await _context.TiposDeDespesaReceitas.FindAsync(id);
             if (tipoDeDespesaReceitaModel == null)
             {
                 return NotFound();
@@ -93,6 +97,7 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid? id, [Bind("Nome,Receita,Despesa,Id")] TipoDeDespesaReceitaModel tipoDeDespesaReceitaModel)
         {
+            CreateViewBags();
             if (id != tipoDeDespesaReceitaModel.Id)
             {
                 return NotFound();
@@ -124,12 +129,13 @@ namespace Obra.MVC.Controllers
         // GET: TipoDeDespesaReceitas/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.TipoDeDespesaReceitaModel == null)
+            CreateViewBags();
+            if (id == null || _context.TiposDeDespesaReceitas == null)
             {
                 return NotFound();
             }
 
-            var tipoDeDespesaReceitaModel = await _context.TipoDeDespesaReceitaModel
+            var tipoDeDespesaReceitaModel = await _context.TiposDeDespesaReceitas
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tipoDeDespesaReceitaModel == null)
             {
@@ -144,14 +150,15 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid? id)
         {
-            if (_context.TipoDeDespesaReceitaModel == null)
+            CreateViewBags();
+            if (_context.TiposDeDespesaReceitas == null)
             {
                 return Problem("Entity set 'ObraMVCContext.TipoDeDespesaReceitaModel'  is null.");
             }
-            var tipoDeDespesaReceitaModel = await _context.TipoDeDespesaReceitaModel.FindAsync(id);
+            var tipoDeDespesaReceitaModel = await _context.TiposDeDespesaReceitas.FindAsync(id);
             if (tipoDeDespesaReceitaModel != null)
             {
-                _context.TipoDeDespesaReceitaModel.Remove(tipoDeDespesaReceitaModel);
+                _context.TiposDeDespesaReceitas.Remove(tipoDeDespesaReceitaModel);
             }
             
             await _context.SaveChangesAsync();
@@ -160,7 +167,7 @@ namespace Obra.MVC.Controllers
 
         private bool TipoDeDespesaReceitaModelExists(Guid? id)
         {
-          return (_context.TipoDeDespesaReceitaModel?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.TiposDeDespesaReceitas?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

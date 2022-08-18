@@ -1,12 +1,7 @@
 ﻿@model Obra.Domain.Models.ContaModel
 
-@{
-    ViewData["Title"] = "Create";
-}
+@await Html.PartialAsync("~/Views/Shared/HeaderPartial.cshtml")
 
-<h1>Create</h1>
-
-<h4>ContaModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -68,7 +63,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-id="@ViewBag.EmpreendimentoId">Back to List</a>
 </div>
 
 @section Scripts {

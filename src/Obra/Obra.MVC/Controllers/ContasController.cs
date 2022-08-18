@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Obra.Domain.Models;
 using Obra.Infra.Data;
+using Obra.MVC.Data;
 
 namespace Obra.MVC.Controllers
 {
@@ -19,20 +20,28 @@ namespace Obra.MVC.Controllers
             _context = context;
         }
 
+        private void InstanceDropDowns(ContaModel conta)
+        {
+            ViewData["EmpreendimentoId"] = new SelectList(_context.Empreendimentos, "Id", "Nome", conta.EmpreendimentoId);
+            ViewData["TipoDeDespesaId"] = new SelectList(_context.TiposDeDespesaReceitas, "Id", "Nome", conta.TipoDeDespesaId);
+            ViewData["TipoDePagamentoId"] = new SelectList(_context.TiposDePagamentos, "Id", "Nome", conta.TipoDePagamentoId);
+        }
+
         // GET: Contas
         public async Task<IActionResult> Index(Guid? id)
         {
             CreateViewBags();
             if(id == null)
             {
-                var obraMVCContext = _context.ContaModel.Include(c => c.Empreendimento).Include(c => c.TipoDePagamento);
+                var obraMVCContext = _context.Contas.Include(c => c.Empreendimento).Include(c => c.TipoDePagamento);
 
                 return View(await obraMVCContext.ToListAsync());
             }
             else
             {
-                ViewBag.NomeDoEmpreendimento = _context.EmpreendimentoModel.Where(a => a.Id == id.Value).FirstOrDefault().Nome;
-                var obraMVCContext = _context.ContaModel.Where(a => a.EmpreendimentoId == id.Value).Include(c => c.Empreendimento).Include(c => c.TipoDePagamento);
+                ViewBag.EmpreendimentoId = id.Value.ToString();
+                ViewBag.NomeDoEmpreendimento = _context.Empreendimentos.Where(a => a.Id == id.Value).FirstOrDefault().Nome;
+                var obraMVCContext = _context.Contas.Where(a => a.EmpreendimentoId == id.Value).Include(c => c.Empreendimento).Include(c => c.TipoDePagamento);
 
                 return View(await obraMVCContext.ToListAsync());
             }
@@ -41,12 +50,13 @@ namespace Obra.MVC.Controllers
         // GET: Contas/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.ContaModel == null)
+            CreateViewBags();
+            if (id == null || _context.Contas == null)
             {
                 return NotFound();
             }
 
-            var contaModel = await _context.ContaModel
+            var contaModel = await _context.Contas
                 .Include(c => c.Empreendimento)
                 .Include(c => c.TipoDePagamento)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -59,11 +69,12 @@ namespace Obra.MVC.Controllers
         }
 
         // GET: Contas/Create
-        public IActionResult Create()
+        public IActionResult Create(Guid? id)
         {
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Nome");
-            ViewData["TipoDeDespesaId"] = new SelectList(_context.TipoDeDespesaReceitaModel, "Id", "Nome");
-            ViewData["TipoDePagamentoId"] = new SelectList(_context.TipoDePagamentoModel, "Id", "Nome");
+            ViewBag.EmpreendimentoId = id.Value.ToString();
+
+            CreateViewBags();
+            InstanceDropDowns(new ContaModel());
             return View();
         }
 
@@ -72,36 +83,35 @@ namespace Obra.MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmpreendimentoId,Vencimento,DataDoPagamento,DataDaCompra,Valor,ValorPago,NumeroDoDocumento,Observacoes,TipoDeDespesaId,TipoDePagamentoId,Id")] ContaModel contaModel)
+        public async Task<IActionResult> Create([Bind("EmpreendimentoId,Vencimento,DataDoPagamento,DataDaCompra,Valor,ValorPago,NumeroDoDocumento,Observacoes,TipoDeDespesaId,TipoDePagamentoId")] ContaModel contaModel)
         {
+            CreateViewBags();
             if (ModelState.IsValid)
+            
             {
                 _context.Add(contaModel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new {id = contaModel.EmpreendimentoId});
             }
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Nome", contaModel.EmpreendimentoId);
-            ViewData["TipoDeDespesaId"] = new SelectList(_context.TipoDeDespesaReceitaModel, "Id", "Nome", contaModel.TipoDeDespesaId);
-            ViewData["TipoDePagamentoId"] = new SelectList(_context.TipoDePagamentoModel, "Id", "Nome", contaModel.TipoDePagamentoId);
+            InstanceDropDowns(contaModel);
             return View(contaModel);
         }
 
         // GET: Contas/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.ContaModel == null)
+            CreateViewBags();
+            if (id == null || _context.Contas == null)
             {
                 return NotFound();
             }
 
-            var contaModel = await _context.ContaModel.FindAsync(id);
+            var contaModel = await _context.Contas.FindAsync(id);
             if (contaModel == null)
             {
                 return NotFound();
             }
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Nome", contaModel.EmpreendimentoId);
-            ViewData["TipoDeDespesaId"] = new SelectList(_context.TipoDeDespesaReceitaModel, "Id", "Nome", contaModel.TipoDeDespesaId);
-            ViewData["TipoDePagamentoId"] = new SelectList(_context.TipoDePagamentoModel, "Id", "Nome", contaModel.TipoDePagamentoId);
+            InstanceDropDowns(contaModel);
             return View(contaModel);
         }
 
@@ -112,6 +122,7 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid? id, [Bind("EmpreendimentoId,Vencimento,DataDoPagamento,DataDaCompra,Valor,ValorPago,NumeroDoDocumento,Observacoes,TipoDeDespesaId,TipoDePagamentoId,Id")] ContaModel contaModel)
         {
+            CreateViewBags();
             if (id != contaModel.Id)
             {
                 return NotFound();
@@ -137,21 +148,20 @@ namespace Obra.MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmpreendimentoId"] = new SelectList(_context.EmpreendimentoModel, "Id", "Nome", contaModel.EmpreendimentoId);
-            ViewData["TipoDeDespesaId"] = new SelectList(_context.TipoDeDespesaReceitaModel, "Id", "Nome", contaModel.TipoDeDespesaId);
-            ViewData["TipoDePagamentoId"] = new SelectList(_context.TipoDePagamentoModel, "Id", "Nome", contaModel.TipoDePagamentoId);
+            InstanceDropDowns(contaModel);
             return View(contaModel);
         }
 
         // GET: Contas/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.ContaModel == null)
+            CreateViewBags();
+            if (id == null || _context.Contas == null)
             {
                 return NotFound();
             }
 
-            var contaModel = await _context.ContaModel
+            var contaModel = await _context.Contas
                 .Include(c => c.Empreendimento)
                 .Include(c => c.TipoDePagamento)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -168,14 +178,15 @@ namespace Obra.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid? id)
         {
-            if (_context.ContaModel == null)
+            CreateViewBags();
+            if (_context.Contas == null)
             {
                 return Problem("Entity set 'ObraMVCContext.ContaModel'  is null.");
             }
-            var contaModel = await _context.ContaModel.FindAsync(id);
+            var contaModel = await _context.Contas.FindAsync(id);
             if (contaModel != null)
             {
-                _context.ContaModel.Remove(contaModel);
+                _context.Contas.Remove(contaModel);
             }
             
             await _context.SaveChangesAsync();
@@ -184,7 +195,7 @@ namespace Obra.MVC.Controllers
 
         private bool ContaModelExists(Guid? id)
         {
-          return (_context.ContaModel?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Contas?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

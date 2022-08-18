@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Obra.Domain.Models;
 using Obra.Infra.Data;
+using Obra.MVC.Data;
 
 namespace Obra.MVC.Controllers
 {
@@ -23,7 +24,7 @@ namespace Obra.MVC.Controllers
         public async Task<IActionResult> Index()
         {
             CreateViewBags();
-            var obraMVCContext = _context.EmpreendimentoModel.Include(e => e.Cliente);
+            var obraMVCContext = _context.Empreendimentos.Include(e => e.Cliente);
             return View(await obraMVCContext.ToListAsync());
         }
 
@@ -31,13 +32,12 @@ namespace Obra.MVC.Controllers
         public async Task<IActionResult> Details(Guid? id)
         {
             CreateViewBags();
-
-            if (id == null || _context.EmpreendimentoModel == null)
+            if (id == null || _context.Empreendimentos == null)
             {
                 return NotFound();
             }
 
-            var empreendimentoModel = await _context.EmpreendimentoModel
+            var empreendimentoModel = await _context.Empreendimentos
                 .Include(e => e.Cliente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (empreendimentoModel == null)
@@ -52,8 +52,7 @@ namespace Obra.MVC.Controllers
         public IActionResult Create()
         {
             CreateViewBags();
-
-            ViewData["ClienteId"] = new SelectList(_context.ClienteFornecedorModel, "Id", "NomeDoCliente");
+            ViewData["ClienteId"] = new SelectList(_context.ClientesFornecedores, "Id", "NomeDoCliente");
             return View();
         }
 
@@ -65,14 +64,13 @@ namespace Obra.MVC.Controllers
         public async Task<IActionResult> Create([Bind("Nome,ClienteId,DataOrcamento,DataInicio,DataPrevistaTermino,DataTermino,Logradouro,Numero,Bairro,Cidade,Estado,Cep,Latitude,Longitude,Id")] EmpreendimentoModel empreendimentoModel)
         {
             CreateViewBags();
-
             if (ModelState.IsValid)
             {
                 _context.Add(empreendimentoModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.ClienteFornecedorModel, "Id", "Bairro", empreendimentoModel.ClienteId);
+            ViewData["ClienteId"] = new SelectList(_context.ClientesFornecedores, "Id", "Bairro", empreendimentoModel.ClienteId);
             return View(empreendimentoModel);
         }
 
@@ -80,18 +78,17 @@ namespace Obra.MVC.Controllers
         public async Task<IActionResult> Edit(Guid? id)
         {
             CreateViewBags();
-
-            if (id == null || _context.EmpreendimentoModel == null)
+            if (id == null || _context.Empreendimentos == null)
             {
                 return NotFound();
             }
 
-            var empreendimentoModel = await _context.EmpreendimentoModel.FindAsync(id);
+            var empreendimentoModel = await _context.Empreendimentos.FindAsync(id);
             if (empreendimentoModel == null)
             {
                 return NotFound();
             }
-            ViewData["ClienteId"] = new SelectList(_context.ClienteFornecedorModel, "Id", "Bairro", empreendimentoModel.ClienteId);
+            ViewData["ClienteId"] = new SelectList(_context.ClientesFornecedores, "Id", "Bairro", empreendimentoModel.ClienteId);
             return View(empreendimentoModel);
         }
 
@@ -103,7 +100,6 @@ namespace Obra.MVC.Controllers
         public async Task<IActionResult> Edit(Guid? id, [Bind("Nome,ClienteId,DataOrcamento,DataInicio,DataPrevistaTermino,DataTermino,Logradouro,Numero,Bairro,Cidade,Estado,Cep,Latitude,Longitude,Id")] EmpreendimentoModel empreendimentoModel)
         {
             CreateViewBags();
-
             if (id != empreendimentoModel.Id)
             {
                 return NotFound();
@@ -129,7 +125,7 @@ namespace Obra.MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.ClienteFornecedorModel, "Id", "Bairro", empreendimentoModel.ClienteId);
+            ViewData["ClienteId"] = new SelectList(_context.ClientesFornecedores, "Id", "Bairro", empreendimentoModel.ClienteId);
             return View(empreendimentoModel);
         }
 
@@ -137,13 +133,12 @@ namespace Obra.MVC.Controllers
         public async Task<IActionResult> Delete(Guid? id)
         {
             CreateViewBags();
-
-            if (id == null || _context.EmpreendimentoModel == null)
+            if (id == null || _context.Empreendimentos == null)
             {
                 return NotFound();
             }
 
-            var empreendimentoModel = await _context.EmpreendimentoModel
+            var empreendimentoModel = await _context.Empreendimentos
                 .Include(e => e.Cliente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (empreendimentoModel == null)
@@ -160,15 +155,14 @@ namespace Obra.MVC.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid? id)
         {
             CreateViewBags();
-
-            if (_context.EmpreendimentoModel == null)
+            if (_context.Empreendimentos == null)
             {
                 return Problem("Entity set 'ObraMVCContext.EmpreendimentoModel'  is null.");
             }
-            var empreendimentoModel = await _context.EmpreendimentoModel.FindAsync(id);
+            var empreendimentoModel = await _context.Empreendimentos.FindAsync(id);
             if (empreendimentoModel != null)
             {
-                _context.EmpreendimentoModel.Remove(empreendimentoModel);
+                _context.Empreendimentos.Remove(empreendimentoModel);
             }
             
             await _context.SaveChangesAsync();
@@ -177,7 +171,7 @@ namespace Obra.MVC.Controllers
 
         private bool EmpreendimentoModelExists(Guid? id)
         {
-          return (_context.EmpreendimentoModel?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Empreendimentos?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

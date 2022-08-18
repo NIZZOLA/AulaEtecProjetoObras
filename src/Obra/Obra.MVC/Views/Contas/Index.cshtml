@@ -1,16 +1,10 @@
 ﻿@model IEnumerable<Obra.Domain.Models.ContaModel>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
-
 @await Html.PartialAsync("~/Views/Shared/HeaderPartial.cshtml")
 <h3> @ViewBag.NomeDoEmpreendimento </h3>
 <p>
-    <a asp-action="Create"><i class="fa-solid fa-plus"></i> Novo</a>
+    <a asp-action="Create" asp-route-id="@ViewBag.EmpreendimentoId"><i class="fa-solid fa-plus"></i> Novo</a>
 </p>
-
 
 <table class="table">
     <thead>
@@ -49,44 +43,45 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Empreendimento.Bairro)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vencimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataDoPagamento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataDaCompra)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Valor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValorPago)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumeroDoDocumento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observacoes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoDeDespesaId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoDePagamento.Nome)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empreendimento.Bairro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vencimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataDoPagamento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataDaCompra)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorPago)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumeroDoDocumento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacoes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoDeDespesaId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoDePagamento.Nome)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

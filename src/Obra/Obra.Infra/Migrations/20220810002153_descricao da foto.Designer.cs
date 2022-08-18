@@ -11,7 +11,7 @@ using Obra.Infra.Data;
 
 namespace Obra.Infra.Migrations
 {
-    [DbContext(typeof(ObraMVCContext))]
+    [DbContext(typeof(ObraDataContext))]
     [Migration("20220810002153_descricao da foto")]
     partial class descricaodafoto
     {

@@ -1,13 +1,7 @@
 ﻿@model Obra.Domain.Models.TipoDeDespesaReceitaModel
 
-@{
-    ViewData["Title"] = "Create";
-}
+@await Html.PartialAsync("~/Views/Shared/HeaderPartial.cshtml")
 
-<h1>Create</h1>
-
-<h4>TipoDeDespesaReceitaModel</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
