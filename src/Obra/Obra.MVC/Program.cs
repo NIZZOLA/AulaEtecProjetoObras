@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Obra.Infra.Data;
 using Obra.MVC.Data;
+using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,11 +11,12 @@ builder.Services.AddDbContext<ObraDataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ObraMVCContext") ?? 
                 throw new InvalidOperationException("Connection string 'ObraMVCContext' not found."), b => b.MigrationsAssembly("Obra.Infra")));
 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ObraMVCIdentityContext>();
+
 builder.Services.AddDbContext<ObraMVCContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ObraMVCContext") ??
                 throw new InvalidOperationException("Connection string 'ObraMVCContext' not found."), b => b.MigrationsAssembly("Obra.Infra")));
-
-
 
 //builder.Services.AddScoped<DbContext, ObraMVCContext>();
 
@@ -34,6 +37,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 

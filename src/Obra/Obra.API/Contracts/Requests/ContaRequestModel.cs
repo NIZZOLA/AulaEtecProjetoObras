@@ -1,4 +1,6 @@
-﻿namespace Obra.API.Contacts.Requests
+﻿using Obra.Domain.Models;
+
+namespace Obra.API.Contacts.Requests
 {
     public class ContaRequestModel
     {

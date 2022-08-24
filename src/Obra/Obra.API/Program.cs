@@ -1,8 +1,12 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Obra.API.Contacts.Requests;
+using Obra.API.Contracts.Response;
+using Obra.API.Extensions;
 using Obra.Domain.Models;
 using Obra.Infra.Data;
+using Obra.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +30,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ObraDataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ObraMVCContext") ?? throw new InvalidOperationException("Connection string 'ObraMVCContext' not found.")));
 
+var configAutomapper = new AutoMapper.MapperConfiguration(cfg =>
+{
+    cfg.CreateMap<ClienteFornecedorModel, ClienteResponseModel>();
+    cfg.CreateMap<EmpreendimentoModel, EmpreendimentoResponseModel>();
+});
+IMapper mapper = configAutomapper.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -38,10 +50,12 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
 
-app.MapGet("/clientes", async (ObraDataContext _context) =>
+app.MapGet("/clientes", async (ObraDataContext _context, IMapper _mapper) =>
 {
     var clientes = await _context.ClientesFornecedores.ToListAsync();
-    return Results.Ok(clientes);
+    var response = _mapper.Map<ICollection<ClienteResponseModel>>(clientes);
+
+    return Results.Ok(response);
 });
 
 app.MapGet("/clientes/{idCliente}", async (ObraDataContext _context, Guid idCliente) =>
@@ -55,10 +69,13 @@ app.MapGet("/clientes/{idCliente}", async (ObraDataContext _context, Guid idClie
     return Results.Ok(clientes);
 });
 
-app.MapGet("/empreendimentos", async (ObraDataContext _context) =>
+app.MapGet("/empreendimentos", async (ObraDataContext _context, IMapper _mapper) =>
 {
-    var empreendimentos = await _context.Empreendimentos.ToListAsync();
-    return Results.Ok(empreendimentos);
+var empreendimentos = await _context.Empreendimentos.Include(a =>a.Cliente)
+    .OrderBy(a => a.Nome).ToListAsync();
+
+    var results = _mapper.Map<ICollection<EmpreendimentoResponseModel>>(empreendimentos);
+    return Results.Ok(results);
 });
 
 app.MapGet("/empreendimentos/{id}", async (ObraDataContext _context, Guid? id) =>
@@ -66,7 +83,7 @@ app.MapGet("/empreendimentos/{id}", async (ObraDataContext _context, Guid? id) =
     if (!id.HasValue)
         return Results.BadRequest();
 
-    var empreendimento = await _context.Empreendimentos.Where(a => a.Id == id.Value).FirstOrDefaultAsync();
+    var empreendimento = await _context.Empreendimentos.Include(a => a.Cliente).Where(a => a.Id == id.Value).FirstOrDefaultAsync();
     return Results.Ok(empreendimento);
 });
 
@@ -102,20 +119,8 @@ app.MapGet("/contas/empreendimento/{idEmpreendimento}", async (ObraDataContext _
 
 app.MapPost("/contas", async (ObraDataContext _context, [FromBody] ContaRequestModel conta) =>
 {
-    var obj = new ContaModel()
-    {
-        DataDoPagamento = conta.DataDoPagamento,
-        DataCriacao = DateTime.Now,
-        DataDaCompra = conta.DataDaCompra,
-        EmpreendimentoId = conta.EmpreendimentoId,
-        NumeroDoDocumento = conta.NumeroDoDocumento,
-        Observacoes = conta.Observacoes,
-        TipoDeDespesaId = conta.TipoDeDespesaId,
-        TipoDePagamentoId = conta.TipoDePagamentoId,
-        Valor = conta.Valor,
-        ValorPago = conta.ValorPago,
-        Vencimento = conta.Vencimento
-    };
+    var obj = conta.ToContaModel();
+
     _context.Add(obj);
     await _context.SaveChangesAsync();
 
