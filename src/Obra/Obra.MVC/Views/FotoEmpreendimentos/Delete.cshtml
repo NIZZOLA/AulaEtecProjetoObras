@@ -12,9 +12,16 @@
             @Html.DisplayFor(model => model.Empreendimento.Bairro)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.NomeDoArquivo)
         </dt>
         <dd class = "col-sm-10">
+            <img src="~/imagens/fotos/@Model.NomeDoArquivo" width="50"/>
             @Html.DisplayFor(model => model.NomeDoArquivo)
         </dd>
     </dl>
