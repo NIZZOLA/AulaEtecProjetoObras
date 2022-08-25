@@ -9,6 +9,9 @@
                 @Html.DisplayNameFor(model => model.Empreendimento)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.NomeDoArquivo)
             </th>
             <th></th>
@@ -20,11 +23,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Empreendimento.Bairro)
             </td>
+            
             <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                <img src="~/imagens/fotos/@item.NomeDoArquivo" width="50"/>
                 @Html.DisplayFor(modelItem => item.NomeDoArquivo)
             </td>
             <td>
-
+                <a asp-action="Delete" asp-route-id="@item.Id" title="Excluir"><i class="fa-solid fa-trash"></i></a>            
             </td>
         </tr>
 }

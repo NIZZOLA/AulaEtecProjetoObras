@@ -11,9 +11,9 @@ namespace Obra.Domain.Models
     {
         [ForeignKey("Empreendimento")]
         public Guid? EmpreendimentoId { get; set; }
-        public EmpreendimentoModel Empreendimento { get; set; }
+        public EmpreendimentoModel? Empreendimento { get; set; }
         public string? Descricao { get; set; }
 
-        public string NomeDoArquivo { get; set; }
+        public string? NomeDoArquivo { get; set; }
     }
 }

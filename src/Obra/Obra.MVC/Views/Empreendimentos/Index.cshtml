@@ -15,12 +15,6 @@
                 @Html.DisplayNameFor(model => model.DataOrcamento)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataPrevistaTermino)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.DataTermino)
             </th>
             <th>
@@ -41,12 +35,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cep)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -57,19 +45,13 @@
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Bairro)
+                @Html.DisplayFor(modelItem => item.Cliente.Nome)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DataOrcamento)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DataInicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataPrevistaTermino)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataTermino)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Logradouro)
@@ -90,16 +72,10 @@
                 @Html.DisplayFor(modelItem => item.Cep)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Latitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitude)
-            </td>
-            <td>
                 @await Html.PartialAsync("~/Views/Shared/IndexTableButtonsPartial.cshtml", item.Id)
             
                 <a asp-action="Index" asp-controller="Contas" asp-route-id="@item.Id" title="Contas"><i class="fa-solid fa-credit-card"></i></a>            
-                <a asp-action="Index" asp-controller="FotoEmpreendimentos" asp-route-id="@item.Id" title="Fotos"><i class="fa-solid fa-images"></i></a>
+                <a asp-action="Index" asp-controller="FotoEmpreendimentos" asp-route-id="@item.Id" title="Fotos"><i class="fa-solid fa-camera"></i></a>
             </td>
         </tr>
 }

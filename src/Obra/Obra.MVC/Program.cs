@@ -14,7 +14,6 @@ builder.Services.AddDbContext<ObraMVCContext>(options =>
                 throw new InvalidOperationException("Connection string 'ObraMVCContext' not found."), b => b.MigrationsAssembly("Obra.Infra")));
 
 
-
 //builder.Services.AddScoped<DbContext, ObraMVCContext>();
 
 // Add services to the container.
