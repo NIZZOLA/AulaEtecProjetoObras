@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Obra.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Obra.Infra.Data
 {
-    public class ObraDataContext : DbContext
+    public class ObraDataContext : IdentityDbContext<IdentityUser>
     {
         public ObraDataContext(DbContextOptions<ObraDataContext> options)
             : base(options)

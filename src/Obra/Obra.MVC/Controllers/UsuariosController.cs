@@ -24,7 +24,7 @@ namespace Obra.MVC.Controllers
         }
 
         // GET: Usuarios/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(string? id)
         {
             base.CreateViewBags();
             if (id == null || _context.Usuarios == null)
@@ -88,7 +88,7 @@ namespace Obra.MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid? id, [Bind("Username,Email,Password,Perfil,Id")] UsuarioModel usuarioModel)
+        public async Task<IActionResult> Edit(string? id, [Bind("Username,Email,Password,Perfil,Id")] UsuarioModel usuarioModel)
         {
             base.CreateViewBags();
             if (id != usuarioModel.Id)
@@ -120,7 +120,7 @@ namespace Obra.MVC.Controllers
         }
 
         // GET: Usuarios/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             base.CreateViewBags();
             if (id == null || _context.Usuarios == null)
@@ -158,7 +158,7 @@ namespace Obra.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioModelExists(Guid? id)
+        private bool UsuarioModelExists(string? id)
         {
           return (_context.Usuarios?.Any(e => e.Id == id)).GetValueOrDefault();
         }

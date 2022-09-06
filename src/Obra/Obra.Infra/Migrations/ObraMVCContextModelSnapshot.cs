@@ -127,7 +127,7 @@ namespace Obra.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClienteFornecedor");
+                    b.ToTable("ClienteFornecedor", (string)null);
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.ContaModel", b =>
@@ -197,7 +197,7 @@ namespace Obra.Infra.Migrations
 
                     b.HasIndex("TipoDePagamentoId");
 
-                    b.ToTable("Contas");
+                    b.ToTable("Contas", (string)null);
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.EmpreendimentoModel", b =>
@@ -282,7 +282,7 @@ namespace Obra.Infra.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("Empreendimentos");
+                    b.ToTable("Empreendimentos", (string)null);
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.FotoEmpreendimentoModel", b =>
@@ -324,7 +324,7 @@ namespace Obra.Infra.Migrations
 
                     b.HasIndex("EmpreendimentoId");
 
-                    b.ToTable("FotosEmpreendimentos");
+                    b.ToTable("FotosEmpreendimentos", (string)null);
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.TipoDeDespesaReceitaModel", b =>
@@ -364,7 +364,7 @@ namespace Obra.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoDeDespesaReceita");
+                    b.ToTable("TipoDeDespesaReceita", (string)null);
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.TipoDePagamentoModel", b =>
@@ -398,7 +398,7 @@ namespace Obra.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoDePagamento");
+                    b.ToTable("TipoDePagamento", (string)null);
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.UsuarioModel", b =>
@@ -439,7 +439,7 @@ namespace Obra.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("Obra.Domain.Models.ContaModel", b =>

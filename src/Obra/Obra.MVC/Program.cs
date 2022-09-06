@@ -12,7 +12,7 @@ builder.Services.AddDbContext<ObraDataContext>(options =>
                 throw new InvalidOperationException("Connection string 'ObraMVCContext' not found."), b => b.MigrationsAssembly("Obra.Infra")));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ObraMVCIdentityContext>();
+    .AddEntityFrameworkStores<ObraDataContext>();
 
 builder.Services.AddDbContext<ObraMVCContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ObraMVCContext") ??
