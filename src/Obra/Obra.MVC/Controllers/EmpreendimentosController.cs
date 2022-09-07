@@ -39,6 +39,8 @@ namespace Obra.MVC.Controllers
 
             var empreendimentoModel = await _context.Empreendimentos
                 .Include(e => e.Cliente)
+                .Include(e => e.Contas)
+                .Include(e => e.Fotos)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (empreendimentoModel == null)
             {

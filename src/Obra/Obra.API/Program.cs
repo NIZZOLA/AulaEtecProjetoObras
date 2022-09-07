@@ -34,6 +34,10 @@ var configAutomapper = new AutoMapper.MapperConfiguration(cfg =>
 {
     cfg.CreateMap<ClienteFornecedorModel, ClienteResponseModel>();
     cfg.CreateMap<EmpreendimentoModel, EmpreendimentoResponseModel>();
+    cfg.CreateMap<ContaModel, ContaResponseModel>();
+    cfg.CreateMap<FotoEmpreendimentoModel, FotoResponseModel>();
+    cfg.CreateMap<TipoDeDespesaReceitaModel, TipoDeReceitaDespesaResponseModel>();
+    cfg.CreateMap<TipoDePagamentoModel, TipoDePagamentoResponseModel>();
 });
 IMapper mapper = configAutomapper.CreateMapper();
 builder.Services.AddSingleton(mapper);
@@ -78,13 +82,20 @@ var empreendimentos = await _context.Empreendimentos.Include(a =>a.Cliente)
     return Results.Ok(results);
 });
 
-app.MapGet("/empreendimentos/{id}", async (ObraDataContext _context, Guid? id) =>
+app.MapGet("/empreendimentos/{id}", async (ObraDataContext _context, IMapper _mapper, Guid? id) =>
 {
     if (!id.HasValue)
         return Results.BadRequest();
 
-    var empreendimento = await _context.Empreendimentos.Include(a => a.Cliente).Where(a => a.Id == id.Value).FirstOrDefaultAsync();
-    return Results.Ok(empreendimento);
+    var empreendimento = await _context.Empreendimentos
+                                        .Include(a => a.Cliente)
+                                        .Include(a => a.Fotos)
+                                        .Include(a => a.Contas)
+                                        .Where(a => a.Id == id.Value).FirstOrDefaultAsync();
+
+    var resposta = _mapper.Map<EmpreendimentoResponseModel>(empreendimento);
+
+    return Results.Ok(resposta);
 });
 
 app.MapGet("/empreendimentos/cliente/{idCliente}", async (ObraDataContext _context, Guid? idCliente) =>

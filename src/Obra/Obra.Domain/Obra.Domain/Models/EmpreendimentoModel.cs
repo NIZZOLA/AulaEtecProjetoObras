@@ -41,5 +41,8 @@ namespace Obra.Domain.Models
 
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+
+        public ICollection<FotoEmpreendimentoModel>? Fotos { get; set; }
+        public ICollection<ContaModel>? Contas { get; set; }
     }
 }

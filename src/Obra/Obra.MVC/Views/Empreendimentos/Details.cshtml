@@ -91,6 +91,11 @@
         </dd>
     </dl>
 </div>
+
+@await Html.PartialAsync("DetailsContas.cshtml", Model.Contas)
+
+@await Html.PartialAsync("DetailsFotos.cshtml", Model.Fotos)
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

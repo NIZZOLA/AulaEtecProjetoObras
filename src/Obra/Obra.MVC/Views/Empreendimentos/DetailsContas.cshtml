@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Obra.Domain.Models.ContaModel>
+
+<div>
+    <h4>Contas</h4>
+    
+    <table class="table">
+    <thead>
+        <tr>
+            <th>
+                Vencimento
+            </th>
+            <th>
+                Data do Pagto
+            </th>
+            <th>
+                Data da Compra
+            </th>
+            <th>
+                Valor
+            </th>
+            <th>
+                Valor Pago
+            </th>
+            <th>
+                Tipo de Despesa
+            </th>
+            <th>
+                Tipo de Pagamento
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vencimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataDoPagamento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataDaCompra)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorPago)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoDeDespesaId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoDePagamento.Nome)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+</div>
