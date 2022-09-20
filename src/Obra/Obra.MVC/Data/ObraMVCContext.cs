@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Obra.Domain.Models;
 using Obra.Infra.Data;
 
 namespace Obra.MVC.Data
@@ -9,6 +10,5 @@ namespace Obra.MVC.Data
             : base(options)
         {
         }
-
     }
 }

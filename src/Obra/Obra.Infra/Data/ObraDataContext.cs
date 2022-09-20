@@ -27,5 +27,35 @@ namespace Obra.Infra.Data
 
         public DbSet<FotoEmpreendimentoModel>? FotosEmpreendimentos { get; set; }
         public DbSet<UsuarioModel>? Usuarios { get; set; }
+
+        private void ApplyBaseTracking()
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is BaseModel && (
+                        e.State == EntityState.Added
+                        || e.State == EntityState.Modified ));
+
+            foreach (var entityEntry in entries)
+            {
+                ((BaseModel)entityEntry.Entity).DataAlteracao = DateTime.Now;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    ((BaseModel)entityEntry.Entity).DataCriacao = DateTime.Now;
+                }
+            }
+        }
+
+        public override int SaveChanges()
+        {
+            this.ApplyBaseTracking();
+            return base.SaveChanges();
+        }
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            this.ApplyBaseTracking();
+            return base.SaveChangesAsync(cancellationToken);
+        }
     }
 }
